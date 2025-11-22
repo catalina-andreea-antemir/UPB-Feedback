@@ -7,6 +7,7 @@ venv*/
 .env/
 .env*/
 
+feedback-raw-no-feedback-contents/feedback_contents/
 # Python cache
 __pycache__/
 *.pyc
