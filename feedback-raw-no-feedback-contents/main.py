@@ -3,22 +3,22 @@ import json
 import os
 import random
 
-# --- CONFIGURARE ---
+# Macrouri pt limitele numarului de studenti
 MIN_STUDENTS = 20
 MAX_STUDENTS = 100
 
 
 def load_pickle(filename):
-    """ Incarca fisierele .p daca exista """
+    # Incarca fisierele .p daca exista
     if not os.path.exists(filename):
-        print(f"[WARNING] Nu gasesc fisierul '{filename}'.")
+        print(f"FILE NOT FOUND: '{filename}'.")
         return []
     with open(filename, 'rb') as f:
         return pickle.load(f)
 
 
 def get_random_response(question_type):
-    """ Genereaza raspunsuri random respectand logica Moodle """
+    # Genereaza raspunsuri random respectand logica formularelor de feedback
     if question_type == "grade":
         grade = random.randint(5, 10)
         return str(grade), str(grade)
@@ -47,7 +47,7 @@ def get_random_response(question_type):
 
 
 def generate_feedback_data(feedback_id, course_name, teacher_name, num_students):
-    """ Construieste structura JSON pentru un singur formular """
+    # Construieste structura JSON pentru un singur formular
     anon_attempts = []
 
     # Calculam ID-uri separate pentru a evita coliziunile
@@ -75,6 +75,7 @@ def generate_feedback_data(feedback_id, course_name, teacher_name, num_students)
         responses = []
         current_attempt_id = base_attempt_id + i
 
+        # Sablonul pt afisarea datelor
         for q_name, q_type, q_default in questions_structure:
             entry = {
                 "id": current_response_global_counter,
@@ -125,9 +126,9 @@ def main():
     output_dir = 'feedback_contents'
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-        print(f"[INFO] Am creat folderul '{output_dir}'")
+        print(f"Folder created: '{output_dir}'")
 
-    print(f"[INFO] Am incarcat {len(feedbacks)} formulare si {len(courses)} cursuri.")
+    print(f"Loaded {len(feedbacks)} feedback forms and {len(courses)} courses.")
 
     count = 0
     for fb in feedbacks:
@@ -135,7 +136,7 @@ def main():
         course_id = fb.get('course')
 
         if fb_id:
-            # Gasirea numelui real al cursului
+            # Se cauta cursul
             course_obj = courses_map.get(course_id)
             course_name = "Curs Necunoscut"
             category_name = ""
@@ -146,7 +147,7 @@ def main():
                 if cat_id and cat_id in categories_map:
                     category_name = categories_map[cat_id].get('name', '')
 
-            # Compunere nume subiect
+            # Compunere nume materie
             full_subject_name = course_name
             if category_name:
                 full_subject_name += f" ({category_name})"
@@ -161,14 +162,14 @@ def main():
             # TODO: Salvare fisier
             filename = os.path.join(output_dir, f"{fb_id}.json")
             with open(filename, 'w', encoding='utf-8') as f:
-                # Am adaugat ensure_ascii=False ca in generator.py
+                # Am adaugat ensure_ascii = False ca in generator.py
                 json.dump(json_data, f, indent=2, ensure_ascii=False)
 
             count += 1
             if count % 50 == 0:
-                print(f"[INFO] Generat {count} fisiere...")
+                print(f"Generating {count} files...")
 
-    print(f"[INFO] Finalizat! {count} fisiere generate in '{output_dir}'.")
+    print(f"Generated {count} files in '{output_dir}'.")
 
 
 if __name__ == "__main__":
