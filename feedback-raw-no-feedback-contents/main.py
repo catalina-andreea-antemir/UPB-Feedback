@@ -51,8 +51,8 @@ def generate_feedback_data(feedback_id, course_name, teacher_name, num_students)
     anon_attempts = []
 
     # Calculam ID-uri separate pentru a evita coliziunile
-    base_attempt_id = feedback_id * 100
-    base_response_id = feedback_id * 100000
+    base_attempt_id = feedback_id
+    base_response_id = feedback_id * 200
 
     current_response_global_counter = base_response_id
 
