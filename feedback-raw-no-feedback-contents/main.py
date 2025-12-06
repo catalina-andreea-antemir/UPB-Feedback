@@ -9,7 +9,7 @@ MAX_STUDENTS = 100
 
 
 def load_pickle(filename):
-    # Incarca fisierele .p daca exista
+    # Incarca fisierele .p
     if not os.path.exists(filename):
         print(f"FILE NOT FOUND: '{filename}'.")
         return []
@@ -50,7 +50,6 @@ def generate_feedback_data(feedback_id, course_name, teacher_name, num_students)
     # Construieste structura JSON pentru un singur formular
     anon_attempts = []
 
-    # Calculam ID-uri separate pentru a evita coliziunile
     base_attempt_id = feedback_id
     base_response_id = feedback_id * 200
 
@@ -156,13 +155,12 @@ def main():
             teacher_name = "Prenume NUME"
             num_students = random.randint(MIN_STUDENTS, MAX_STUDENTS)
 
-            # TODO: Generare Json
+            # Generare Json
             json_data = generate_feedback_data(fb_id, full_subject_name, teacher_name, num_students)
 
-            # TODO: Salvare fisier
+            # Salvare fisier
             filename = os.path.join(output_dir, f"{fb_id}.json")
             with open(filename, 'w', encoding='utf-8') as f:
-                # Am adaugat ensure_ascii = False ca in generator.py
                 json.dump(json_data, f, indent=2, ensure_ascii=False)
 
             count += 1
