@@ -161,6 +161,7 @@ def main():
             # Salvare fisier
             filename = os.path.join(output_dir, f"{fb_id}.json")
             with open(filename, 'w', encoding='utf-8') as f:
+                # feedback-uri cu diacritice, deci folosim ensure_ascii=False
                 json.dump(json_data, f, indent=2, ensure_ascii=False)
 
             count += 1
